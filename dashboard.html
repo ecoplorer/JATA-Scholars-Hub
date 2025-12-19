@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+
+  <!-- Bootstrap CSS (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <!-- AOS CSS (CDN) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Your Custom CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+
+  <!-- Page-only tweaks to align spacing with fixed navbar -->
+  <style>
+    main {
+      padding-top: 96px;
+    }
+    @media (max-width: 991.98px) {
+      main {
+        padding-top: 86px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">
+    <i class="bi bi-arrow-up"></i>
+  </button>
+
+  <!-- Header Navigation (aligned with your other pages) -->
+  <header class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <img src="../images/logos/jata.png" alt="JATA Logo" height="40" class="me-2">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="../index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="dashboard.html" aria-current="page">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../about.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../contact.html">Contact</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container py-4" data-aos="fade-up">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-3">
+        <div>
+          <h1 class="mb-1">Student Dashboard</h1>
+          <p class="lead mb-0">Monitor and manage scholarship recipients</p>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+          <span class="text-muted small" id="pagingInfo">Loading...</span>
+          <span class="badge bg-dark" id="resultCount">(0)</span>
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="dashboard-stats mb-4">
+        <div class="row g-3">
+          <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="100">
+            <div class="stat-card text-center">
+              <i class="bi bi-people-fill stats-icon text-primary"></i>
+              <h3 class="stats-number mb-0" id="totalStudents">0</h3>
+              <p class="stats-label mb-0">Total Students</p>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
+            <div class="stat-card text-center">
+              <i class="bi bi-mortarboard-fill stats-icon text-success"></i>
+              <h3 class="stats-number mb-0" id="mastersStudents">0</h3>
+              <p class="stats-label mb-0">Master&apos;s Students</p>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="300">
+            <div class="stat-card text-center">
+              <i class="bi bi-award-fill stats-icon text-info"></i>
+              <h3 class="stats-number mb-0" id="phdStudents">0</h3>
+              <p class="stats-label mb-0">PhD Students</p>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="400">
+            <div class="stat-card text-center">
+              <i class="bi bi-globe stats-icon text-warning"></i>
+              <h3 class="stats-number mb-0" id="universities">0</h3>
+              <p class="stats-label mb-0">Universities</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Section -->
+      <div class="filter-section mb-4" data-aos="fade-up" data-aos-delay="150">
+        <div class="row g-3 align-items-end">
+
+          <div class="col-md-4">
+            <label class="form-label">Filter by Preferred Course</label>
+            <select class="form-select" id="preferredCourseFilter">
+              <option value="">All Preferred Courses</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Filter by Assigned Course</label>
+            <select class="form-select" id="courseFilter">
+              <option value="">All Assigned Courses</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Filter by Degree Level</label>
+            <select class="form-select" id="degreeFilter">
+              <option value="">All Degree Levels</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Filter by University</label>
+            <select class="form-select" id="universityFilter">
+              <option value="">All Universities</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Filter by LGA</label>
+            <select class="form-select" id="lgaFilter">
+              <option value="">All LGAs</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Filter by Gender</label>
+            <select class="form-select" id="genderFilter">
+              <option value="">All Genders</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Filter by Performance</label>
+            <select class="form-select" id="performanceFilter">
+              <option value="">All Performance</option>
+              <option value="excellent">Excellent</option>
+              <option value="good">Good</option>
+              <option value="average">Average</option>
+              <option value="poor">Poor</option>
+              <option value="not yet rated">Not yet rated</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Search Student</label>
+            <input type="text" class="form-control" id="searchInput" placeholder="Search by name, ID, email, LGA, ward, course, university...">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Sort</label>
+            <select class="form-select" id="sortBy">
+              <option value="nameAsc">Name (A to Z)</option>
+              <option value="nameDesc">Name (Z to A)</option>
+              <option value="ageAsc">Age (Low to High)</option>
+              <option value="ageDesc">Age (High to Low)</option>
+              <option value="gpaDesc">GPA (High to Low)</option>
+              <option value="gpaAsc">GPA (Low to High)</option>
+              <option value="sNoAsc">S/No (Low to High)</option>
+              <option value="sNoDesc">S/No (High to Low)</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Rows per page</label>
+            <select class="form-select" id="pageSize">
+              <option value="10">10</option>
+              <option value="25" selected>25</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+
+          <div class="col-md-4 d-grid">
+            <button class="btn btn-outline-secondary" id="clearFilters">
+              <i class="bi bi-x-circle me-2"></i>Clear Filters
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Table -->
+      <div class="card" data-aos="fade-up" data-aos-delay="200">
+        <div class="card-header bg-dark text-white d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+          <h5 class="mb-0">
+            <i class="bi bi-table me-2"></i>Students
+          </h5>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-light" id="prevPage" type="button">
+              <i class="bi bi-chevron-left me-1"></i>Prev
+            </button>
+            <button class="btn btn-sm btn-outline-light" id="nextPage" type="button">
+              Next<i class="bi bi-chevron-right ms-1"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 70px;">S/No</th>
+                <th style="width: 70px;">Photo</th>
+                <th>Full Name</th>
+                <th style="width: 120px;">Gender</th>
+                <th style="width: 90px;">Age</th>
+                <th style="width: 160px;">LGA</th>
+                <th>Assigned Course</th>
+                <th style="width: 180px;">University</th>
+                <th style="width: 160px;">Performance</th>
+                <th style="width: 140px;" class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody">
+              <tr>
+                <td colspan="10" class="text-center py-4 text-muted">Loading students...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="row g-4 mt-4">
+        <div class="col-lg-6" data-aos="fade-right" data-aos-delay="150">
+          <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+              <h5 class="mb-0">Assigned Course Distribution</h5>
+            </div>
+            <div class="card-body">
+              <div style="height: 320px;">
+                <canvas id="courseChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6" data-aos="fade-left" data-aos-delay="150">
+          <div class="card h-100">
+            <div class="card-header bg-success text-white">
+              <h5 class="mb-0">Performance Overview</h5>
+            </div>
+            <div class="card-body">
+              <div style="height: 320px;">
+                <canvas id="performanceChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Student Details Modal (captures every JSON field) -->
+  <div class="modal fade" id="studentDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Student Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-4">
+
+            <!-- Profile header -->
+            <div class="col-12">
+              <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 p-3 border rounded-3 bg-light">
+                <img id="modal-photo" src="/images/placeholders/avatar.jpg" alt="Student photo" class="rounded-circle border" style="width: 70px; height: 70px; object-fit: cover;">
+                <div class="flex-grow-1">
+                  <div class="fw-bold fs-5" id="modal-full-name"></div>
+                  <div class="text-muted small">
+                    <span class="me-3"><i class="bi bi-credit-card-2-front me-1"></i><span id="modal-employee-id"></span></span>
+                    <span class="me-3"><i class="bi bi-hash me-1"></i>S/No: <span id="modal-sno"></span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Left: Personal + Contact + Background -->
+            <div class="col-lg-6">
+
+              <h6 class="mb-2">Personal and Contact Information</h6>
+              <table class="table table-sm">
+                <tbody>
+                  <tr>
+                    <td><strong>Gender:</strong></td>
+                    <td id="modal-gender"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Date of Birth:</strong></td>
+                    <td id="modal-dob"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Age:</strong></td>
+                    <td id="modal-age"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Marital Status:</strong></td>
+                    <td id="modal-marital-status"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>LGA:</strong></td>
+                    <td id="modal-lga"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ward:</strong></td>
+                    <td id="modal-ward"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Email:</strong></td>
+                    <td id="modal-email"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Phone:</strong></td>
+                    <td id="modal-phone"></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h6 class="mb-2 mt-4">Academic Background (Before Scholarship)</h6>
+              <table class="table table-sm">
+                <tbody>
+                  <tr>
+                    <td><strong>Highest Qualification:</strong></td>
+                    <td id="modal-qualification"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Area of Study:</strong></td>
+                    <td id="modal-area-study"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Year Graduated:</strong></td>
+                    <td id="modal-year-graduated"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Preferred Degree:</strong></td>
+                    <td id="modal-preferred-degree"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Preferred Course:</strong></td>
+                    <td id="modal-preferred-course"></td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+            <!-- Right: Parents + Current placement + Performance -->
+            <div class="col-lg-6">
+
+              <h6 class="mb-2">Parent or Guardian Details</h6>
+
+              <div class="border rounded-3 p-3 mb-3">
+                <div class="fw-semibold mb-2"><i class="bi bi-person-badge me-2"></i>Father</div>
+                <table class="table table-sm mb-0">
+                  <tbody>
+                    <tr>
+                      <td style="width: 200px;"><strong>Name:</strong></td>
+                      <td id="modal-father-name"></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Phone:</strong></td>
+                      <td id="modal-father-phone"></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Email:</strong></td>
+                      <td id="modal-father-email"></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Address:</strong></td>
+                      <td id="modal-father-address"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="border rounded-3 p-3 mb-3">
+                <div class="fw-semibold mb-2"><i class="bi bi-person-badge-fill me-2"></i>Mother</div>
+                <table class="table table-sm mb-0">
+                  <tbody>
+                    <tr>
+                      <td style="width: 200px;"><strong>Name:</strong></td>
+                      <td id="modal-mother-name"></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Phone:</strong></td>
+                      <td id="modal-mother-phone"></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Email:</strong></td>
+                      <td id="modal-mother-email"></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Address:</strong></td>
+                      <td id="modal-mother-address"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h6 class="mb-2 mt-4">Placement and Academic Tracking (During Scholarship)</h6>
+              <table class="table table-sm">
+                <tbody>
+                  <tr>
+                    <td style="width: 200px;"><strong>Assigned Course:</strong></td>
+                    <td id="modal-course"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Degree Level:</strong></td>
+                    <td id="modal-degree-level"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>University:</strong></td>
+                    <td id="modal-university"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Current GPA:</strong></td>
+                    <td id="modal-gpa"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Attendance Rate:</strong></td>
+                    <td id="modal-attendance"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Research Progress:</strong></td>
+                    <td id="modal-research"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Overall Performance:</strong></td>
+                    <td id="modal-performance"></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Notes:</strong></td>
+                    <td id="modal-notes"></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="alert alert-light border mb-0">
+                <div class="d-flex align-items-start gap-2">
+                 
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="saveChangesBtn" disabled>Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer bg-dark text-white py-4" data-aos="fade-up">
+    <div class="container">
+      <div class="row g-4">
+
+        <div class="col-lg-4">
+          <div class="footer-widget">
+            <h5>Jigawa Agricultural Commercialization Workforce Scholarship</h5>
+            <p>Empowering Jigawa State&apos;s Agricultural Transformation Through International Education</p>
+            <div class="footer-brand mt-3">
+              <img src="../images/logos/jata.png" alt="JATA Logo" height="40">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="footer-widget">
+            <h5>Quick Links</h5>
+            <ul class="list-unstyled footer-links">
+              <li><a href="../index.html" class="text-white text-decoration-none"><i class="bi bi-house-door me-2"></i>Home</a></li>
+              <li><a href="dashboard.html" class="text-white text-decoration-none"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+              <li><a href="../about.html" class="text-white text-decoration-none"><i class="bi bi-info-circle me-2"></i>About</a></li>
+              <li><a href="../contact.html" class="text-white text-decoration-none"><i class="bi bi-envelope me-2"></i>Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="footer-widget">
+            <h5>Follow Us</h5>
+            <div class="social-links">
+              <a href="#" class="social-link" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="social-link" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="social-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="social-link" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <hr class="my-4 bg-white">
+
+      <div class="row">
+        <div class="col-12 text-center">
+          <p class="mb-0">&copy; 2025 Jigawa Agricultural Commercialization Workforce Scholarship. All rights reserved.</p>
+          <p class="mb-0">Powered by Jigawa Agricultural Transformation Agency (JATA)</p>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Scripts, CDN only -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Chart.js (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <script>
+    let STUDENTS = [];
+
+    const PERF_LABEL = {
+      excellent: { text: "Excellent", cls: "pill-excellent", icon: "bi bi-check-circle-fill" },
+      good:      { text: "Good",      cls: "pill-good",      icon: "bi bi-hand-thumbs-up-fill" },
+      average:   { text: "Average",   cls: "pill-average",   icon: "bi bi-dash-circle-fill" },
+      poor:      { text: "Poor",      cls: "pill-poor",      icon: "bi bi-exclamation-triangle-fill" },
+      "not yet rated": { text: "Not yet rated", cls: "pill-not-rated", icon: "bi bi-hourglass-split" }
+    };
+
+    const state = {
+      students: [],
+      filtered: [],
+      page: 1,
+      pageSize: 25,
+      sortBy: "nameAsc",
+      course: "",
+      preferredCourse: "",
+      degree: "",
+      university: "",
+      lga: "",
+      gender: "",
+      perf: "",
+      q: ""
+    };
+
+    let courseChart = null;
+    let perfChart = null;
+
+    function isNilish(v) {
+      const s = String(v ?? "").trim().toLowerCase();
+      return s === "" || s === "nil" || s === "n/a" || s === "na" || s === "none" || s === "null" || s === "undefined";
+    }
+
+    function safeText(v, fallback = "") {
+      if (v === null || v === undefined) return fallback;
+      const s = String(v).trim();
+      if (isNilish(s)) return fallback;
+      return s;
+    }
+
+    function normalizeLower(v) {
+      return safeText(v).toLowerCase();
+    }
+
+    function parseNumber(v) {
+      const s = safeText(v);
+      if (!s) return "";
+      const n = Number(s);
+      return Number.isFinite(n) ? n : "";
+    }
+
+    function formatDateISOToNice(iso) {
+      const raw = safeText(iso);
+      if (!raw) return "";
+      const d = new Date(raw + "T00:00:00");
+      if (Number.isNaN(d.getTime())) return raw;
+      return d.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+    }
+
+    function guessPerformance(student) {
+      const explicit = safeText(student.performance).toLowerCase();
+      if (explicit && PERF_LABEL[explicit]) return explicit;
+
+      const gpa = student.gpa;
+      if (gpa === "" || gpa === null || gpa === undefined) return "not yet rated";
+      const val = Number(gpa);
+
+      if (!Number.isFinite(val)) return "not yet rated";
+      if (val >= 4.5) return "excellent";
+      if (val >= 3.5) return "good";
+      if (val >= 2.5) return "average";
+      return "poor";
+    }
+
+    function resolvePhotoPath(photoValue) {
+      const raw = safeText(photoValue);
+      const fallback = "../images/placeholders/avatar.png";
+      if (!raw) return fallback;
+
+      if (/\.(png|jpg|jpeg|webp)$/i.test(raw)) return "../" + raw.replace(/^(\.\.\/)+/, "").replace(/^\//, "");
+      return "../" + raw.replace(/^(\.\.\/)+/, "").replace(/^\//, "") + ".jpg";
+    }
+
+    function normalizeStudent(raw, idx) {
+      const get = (k1, k2, k3) => raw[k1] ?? raw[k2] ?? raw[k3] ?? "";
+
+      const sNo = get("sNo", "sno", "S/No");
+
+      const employeeId = get("employeeId", "employee_id", "id");
+      const fullName = get("fullName", "full_name", "name");
+      const photo = get("photo", "Photo", "image");
+
+      const gender = get("gender", "sex", "Gender");
+      const dob = get("dob", "date_of_birth", "DOB");
+      const age = get("age", "Age", "years");
+      const maritalStatus = get("maritalStatus", "marital_status", "marital");
+      const lga = get("lga", "LGA", "local_government");
+      const ward = get("ward", "Ward", "electoral_ward");
+
+      const email = get("email", "Email", "mail");
+      const phone = get("phone", "Phone", "telephone");
+
+      const qualification = get("qualification", "highest_qualification", "HighestQualification");
+      const areaStudy = get("areaStudy", "area_of_study", "AreaOfStudy");
+      const yearGraduated = get("yearGraduated", "year_graduated", "YearGraduated");
+      const preferredDegree = get("preferredDegree", "preferred_degree", "PreferredDegree");
+      const preferredCourse = get("preferredCourse", "preferred_course", "PreferredCourse");
+
+      const fatherName = get("fatherName", "father_name", "FatherName");
+      const fatherPhone = get("fatherPhone", "father_phone", "FatherPhone");
+      const fatherEmail = get("fatherEmail", "father_email", "FatherEmail");
+      const fatherAddress = get("fatherAddress", "father_address", "FatherAddress");
+
+      const motherName = get("motherName", "mother_name", "MotherName");
+      const motherPhone = get("motherPhone", "mother_phone", "MotherPhone");
+      const motherEmail = get("motherEmail", "mother_email", "MotherEmail");
+      const motherAddress = get("motherAddress", "mother_address", "MotherAddress");
+
+      const course = get("course", "Course", "program");
+      const degreeLevel = get("degreeLevel", "degree_level", "DegreeLevel");
+      const university = get("university", "University", "institution");
+
+      const gpa = parseNumber(get("gpa", "GPA", "current_gpa"));
+      const attendance = parseNumber(get("attendance", "attendance_rate", "Attendance"));
+      const research = get("research", "research_progress", "ResearchProgress");
+
+      const performanceRaw = get("performance", "overall_performance", "Performance");
+      const notes = get("notes", "Notes", "comment");
+
+      const student = {
+        id: idx + 1,
+        sNo: safeText(sNo, String(idx + 1)),
+        employeeId: safeText(employeeId),
+        fullName: safeText(fullName),
+        photo: safeText(photo),
+
+        gender: safeText(gender),
+        dob: safeText(dob),
+        age: safeText(age),
+        maritalStatus: safeText(maritalStatus),
+        lga: safeText(lga),
+        ward: safeText(ward),
+
+        email: safeText(email),
+        phone: safeText(phone),
+
+        qualification: safeText(qualification),
+        areaStudy: safeText(areaStudy),
+        yearGraduated: safeText(yearGraduated),
+        preferredDegree: safeText(preferredDegree),
+        preferredCourse: safeText(preferredCourse),
+
+        fatherName: safeText(fatherName),
+        fatherPhone: safeText(fatherPhone),
+        fatherEmail: safeText(fatherEmail),
+        fatherAddress: safeText(fatherAddress),
+
+        motherName: safeText(motherName),
+        motherPhone: safeText(motherPhone),
+        motherEmail: safeText(motherEmail),
+        motherAddress: safeText(motherAddress),
+
+        course: safeText(course),
+        degreeLevel: safeText(degreeLevel),
+        university: safeText(university),
+
+        gpa,
+        attendance,
+        research: safeText(research),
+        performance: safeText(performanceRaw),
+        notes: safeText(notes)
+      };
+
+      student.performanceKey = guessPerformance(student);
+      return student;
+    }
+
+    async function loadStudents() {
+      const dataUrl = "../data/students.JSON";
+
+      const res = await fetch(dataUrl, { cache: "no-store" });
+      if (!res.ok) {
+        throw new Error(`Failed to load ${dataUrl} [HTTP ${res.status}]`);
+      }
+
+      const raw = await res.json();
+      if (!Array.isArray(raw)) {
+        throw new Error("students.JSON must be an array of student objects");
+      }
+
+      STUDENTS = raw.map(normalizeStudent);
+      state.students = [...STUDENTS];
+    }
+
+    function calcStats(list) {
+      const total = list.length;
+      const masters = list.filter(s => normalizeLower(s.degreeLevel) === "masters").length;
+      const phd = list.filter(s => normalizeLower(s.degreeLevel) === "phd").length;
+      const uni = new Set(list.map(s => safeText(s.university).trim()).filter(Boolean)).size;
+      return { total, masters, phd, uni };
+    }
+
+    function matchesFilters(s) {
+      const assignedCourseOk = !state.course || safeText(s.course) === state.course;
+      const preferredCourseOk = !state.preferredCourse || safeText(s.preferredCourse) === state.preferredCourse;
+
+      const degreeOk = !state.degree || normalizeLower(s.degreeLevel) === state.degree;
+      const uniOk = !state.university || safeText(s.university) === state.university;
+      const lgaOk = !state.lga || safeText(s.lga) === state.lga;
+      const genderOk = !state.gender || normalizeLower(s.gender) === state.gender;
+
+      const perfOk = !state.perf || normalizeLower(s.performanceKey) === state.perf;
+
+      const q = state.q.trim().toLowerCase();
+      if (!q) return assignedCourseOk && preferredCourseOk && degreeOk && uniOk && lgaOk && genderOk && perfOk;
+
+      const blob = [
+        s.sNo, s.employeeId, s.fullName, s.gender, s.dob, s.age, s.maritalStatus, s.lga, s.ward,
+        s.email, s.phone,
+        s.qualification, s.areaStudy, s.yearGraduated, s.preferredDegree, s.preferredCourse,
+        s.fatherName, s.fatherPhone, s.fatherEmail, s.fatherAddress,
+        s.motherName, s.motherPhone, s.motherEmail, s.motherAddress,
+        s.course, s.degreeLevel, s.university,
+        s.gpa, s.attendance, s.research, s.performanceKey, s.notes
+      ].map(x => safeText(x).toLowerCase()).join(" | ");
+
+      return assignedCourseOk && preferredCourseOk && degreeOk && uniOk && lgaOk && genderOk && perfOk && blob.includes(q);
+    }
+
+    function sortStudents(list) {
+      const arr = [...list];
+      const key = state.sortBy;
+
+      const cmpStr = (a, b) => String(a).localeCompare(String(b), undefined, { sensitivity: "base" });
+      const cmpNum = (a, b) => (Number(a) || 0) - (Number(b) || 0);
+
+      if (key === "nameAsc") arr.sort((a, b) => cmpStr(a.fullName || "", b.fullName || ""));
+      if (key === "nameDesc") arr.sort((a, b) => cmpStr(b.fullName || "", a.fullName || ""));
+      if (key === "ageAsc") arr.sort((a, b) => cmpNum(a.age, b.age));
+      if (key === "ageDesc") arr.sort((a, b) => cmpNum(b.age, a.age));
+      if (key === "gpaAsc") arr.sort((a, b) => cmpNum(a.gpa, b.gpa));
+      if (key === "gpaDesc") arr.sort((a, b) => cmpNum(b.gpa, a.gpa));
+      if (key === "sNoAsc") arr.sort((a, b) => cmpNum(a.sNo, b.sNo));
+      if (key === "sNoDesc") arr.sort((a, b) => cmpNum(b.sNo, a.sNo));
+
+      return arr;
+    }
+
+    function paginate(list) {
+      const total = list.length;
+      const totalPages = Math.max(1, Math.ceil(total / state.pageSize));
+      state.page = Math.min(state.page, totalPages);
+
+      const start = (state.page - 1) * state.pageSize;
+      const end = start + state.pageSize;
+      const slice = list.slice(start, end);
+
+      return { slice, total, totalPages, start, end: Math.min(end, total) };
+    }
+
+    function perfPill(perfKey) {
+      const key = normalizeLower(perfKey) || "not yet rated";
+      const p = PERF_LABEL[key] || PERF_LABEL["not yet rated"];
+      return `<span class="pill ${p.cls}"><i class="${p.icon}"></i>${p.text}</span>`;
+    }
+
+    function renderStats() {
+      const { total, masters, phd, uni } = calcStats(state.filtered);
+      document.getElementById("totalStudents").textContent = total;
+      document.getElementById("mastersStudents").textContent = masters;
+      document.getElementById("phdStudents").textContent = phd;
+      document.getElementById("universities").textContent = uni;
+    }
+
+    function renderSelectOptions(selectId, values, placeholder) {
+      const sel = document.getElementById(selectId);
+      const current = sel.value;
+
+      sel.innerHTML = `<option value="">${placeholder}</option>` + values.map(v => `<option value="${v}">${v}</option>`).join("");
+
+      if (values.includes(current)) sel.value = current;
+      else sel.value = "";
+    }
+
+    function renderAllFilters() {
+      const assignedCourses = Array.from(new Set(state.students.map(s => safeText(s.course).trim()).filter(Boolean)))
+        .sort((a, b) => a.localeCompare(b));
+
+      const preferredCourses = Array.from(new Set(state.students.map(s => safeText(s.preferredCourse).trim()).filter(Boolean)))
+        .sort((a, b) => a.localeCompare(b));
+
+      const degrees = Array.from(new Set(state.students.map(s => safeText(s.degreeLevel).trim()).filter(Boolean)))
+        .sort((a, b) => a.localeCompare(b));
+
+      const universities = Array.from(new Set(state.students.map(s => safeText(s.university).trim()).filter(Boolean)))
+        .sort((a, b) => a.localeCompare(b));
+
+      const lgas = Array.from(new Set(state.students.map(s => safeText(s.lga).trim()).filter(Boolean)))
+        .sort((a, b) => a.localeCompare(b));
+
+      renderSelectOptions("courseFilter", assignedCourses, "All Assigned Courses");
+      renderSelectOptions("preferredCourseFilter", preferredCourses, "All Preferred Courses");
+      renderSelectOptions("degreeFilter", degrees, "All Degree Levels");
+      renderSelectOptions("universityFilter", universities, "All Universities");
+      renderSelectOptions("lgaFilter", lgas, "All LGAs");
+
+      document.getElementById("genderFilter").value = state.gender || "";
+      document.getElementById("performanceFilter").value = state.perf || "";
+    }
+
+    function renderTable(paged) {
+      const tbody = document.getElementById("studentTableBody");
+      tbody.innerHTML = "";
+
+      if (paged.slice.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" class="text-center py-4 text-muted">
+              No students found for the selected filters.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = paged.slice.map((s, idx) => {
+        const serial = paged.start + idx + 1;
+        const photoSrc = resolvePhotoPath(s.photo);
+        const courseText = safeText(s.course, "Not assigned");
+        const uniText = safeText(s.university, "Not assigned");
+
+        return `
+          <tr>
+            <td>${serial}</td>
+            <td>
+              <img src="${photoSrc}" alt="Photo of ${safeText(s.fullName)}" class="table-avatar" loading="lazy"
+                onerror="this.onerror=null;this.src='../images/placeholders/avatar.png';">
+            </td>
+            <td class="fw-bold">${safeText(s.fullName)}</td>
+            <td>${safeText(s.gender)}</td>
+            <td>${safeText(s.age)}</td>
+            <td>${safeText(s.lga)}</td>
+            <td>${courseText}</td>
+            <td>${uniText}</td>
+            <td>${perfPill(s.performanceKey)}</td>
+            <td class="text-center">
+              <div class="actions-btns d-flex gap-2 justify-content-center">
+                <button class="btn btn-sm btn-outline-primary" type="button" data-action="view" data-id="${s.id}">
+                  <i class="bi bi-eye me-1"></i>View
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderPaging(paged) {
+      const rc = document.getElementById("resultCount");
+      if (rc) rc.textContent = `(${paged.total})`;
+
+      const pi = document.getElementById("pagingInfo");
+      if (pi) pi.textContent = `Showing ${paged.total === 0 ? 0 : paged.start + 1} to ${paged.end} of ${paged.total}`;
+
+      const prev = document.getElementById("prevPage");
+      const next = document.getElementById("nextPage");
+      if (prev) prev.disabled = state.page <= 1;
+      if (next) next.disabled = state.page >= paged.totalPages;
+    }
+
+    function buildCountsByCourse(list) {
+      const map = new Map();
+      for (const s of list) {
+        const k = safeText(s.course, "Not assigned").trim() || "Not assigned";
+        map.set(k, (map.get(k) || 0) + 1);
+      }
+      return map;
+    }
+
+    function buildCountsByPerf(list) {
+      const map = new Map([["excellent", 0], ["good", 0], ["average", 0], ["poor", 0], ["not yet rated", 0]]);
+      for (const s of list) {
+        const k = normalizeLower(s.performanceKey) || "not yet rated";
+        if (!map.has(k)) map.set(k, 0);
+        map.set(k, map.get(k) + 1);
+      }
+      return map;
+    }
+
+    function renderCharts() {
+      if (!window.Chart) return;
+
+      const base = state.filtered;
+
+      const courseMap = buildCountsByCourse(base);
+      const courseLabels = Array.from(courseMap.keys());
+      const courseData = Array.from(courseMap.values());
+
+      const perfMap = buildCountsByPerf(base);
+      const perfKeys = ["excellent", "good", "average", "poor", "not yet rated"];
+      const perfLabels = perfKeys.map(k => PERF_LABEL[k].text);
+      const perfData = perfKeys.map(k => perfMap.get(k) || 0);
+
+      const c = document.getElementById("courseChart");
+      const p = document.getElementById("performanceChart");
+      if (!c || !p) return;
+
+      if (courseChart) courseChart.destroy();
+      if (perfChart) perfChart.destroy();
+
+      courseChart = new Chart(c, {
+        type: "bar",
+        data: { labels: courseLabels, datasets: [{ label: "Students", data: courseData }] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, precision: 0 } }
+        }
+      });
+
+      perfChart = new Chart(p, {
+        type: "doughnut",
+        data: { labels: perfLabels, datasets: [{ data: perfData }] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: "bottom" } }
+        }
+      });
+    }
+
+    function applyFiltersAndRender(resetPage = true) {
+      if (resetPage) state.page = 1;
+
+      const filtered = state.students.filter(matchesFilters);
+      state.filtered = sortStudents(filtered);
+
+      renderStats();
+      const paged = paginate(state.filtered);
+      renderTable(paged);
+      renderPaging(paged);
+      renderCharts();
+    }
+
+    function setModalStudent(s) {
+      document.getElementById("modal-sno").textContent = safeText(s.sNo);
+
+      document.getElementById("modal-photo").src = resolvePhotoPath(s.photo);
+      document.getElementById("modal-photo").onerror = function () {
+        this.onerror = null;
+        this.src = "../images/placeholders/avatar.png";
+      };
+
+      document.getElementById("modal-employee-id").textContent = safeText(s.employeeId);
+      document.getElementById("modal-full-name").textContent = safeText(s.fullName);
+
+      document.getElementById("modal-gender").textContent = safeText(s.gender);
+      document.getElementById("modal-dob").textContent = formatDateISOToNice(s.dob);
+      document.getElementById("modal-age").textContent = safeText(s.age);
+      document.getElementById("modal-marital-status").textContent = safeText(s.maritalStatus);
+      document.getElementById("modal-lga").textContent = safeText(s.lga);
+      document.getElementById("modal-ward").textContent = safeText(s.ward);
+
+      document.getElementById("modal-email").textContent = safeText(s.email);
+      document.getElementById("modal-phone").textContent = safeText(s.phone);
+
+      document.getElementById("modal-qualification").textContent = safeText(s.qualification);
+      document.getElementById("modal-area-study").textContent = safeText(s.areaStudy);
+      document.getElementById("modal-year-graduated").textContent = safeText(s.yearGraduated);
+      document.getElementById("modal-preferred-degree").textContent = safeText(s.preferredDegree);
+      document.getElementById("modal-preferred-course").textContent = safeText(s.preferredCourse);
+
+      document.getElementById("modal-father-name").textContent = safeText(s.fatherName);
+      document.getElementById("modal-father-phone").textContent = safeText(s.fatherPhone);
+      document.getElementById("modal-father-email").textContent = safeText(s.fatherEmail);
+      document.getElementById("modal-father-address").textContent = safeText(s.fatherAddress);
+
+      document.getElementById("modal-mother-name").textContent = safeText(s.motherName);
+      document.getElementById("modal-mother-phone").textContent = safeText(s.motherPhone);
+      document.getElementById("modal-mother-email").textContent = safeText(s.motherEmail);
+      document.getElementById("modal-mother-address").textContent = safeText(s.motherAddress);
+
+      document.getElementById("modal-course").textContent = safeText(s.course, "Not assigned");
+      document.getElementById("modal-degree-level").textContent = safeText(s.degreeLevel, "Not assigned");
+      document.getElementById("modal-university").textContent = safeText(s.university, "Not assigned");
+
+      document.getElementById("modal-gpa").textContent = (s.gpa === "" ? "" : String(s.gpa));
+      document.getElementById("modal-attendance").textContent = (s.attendance === "" ? "" : `${s.attendance}%`);
+      document.getElementById("modal-research").textContent = safeText(s.research);
+      document.getElementById("modal-performance").innerHTML = perfPill(s.performanceKey);
+      document.getElementById("modal-notes").textContent = safeText(s.notes);
+    }
+
+    function openStudentModal(id) {
+      const s = state.students.find(x => x.id === id);
+      if (!s) return;
+
+      setModalStudent(s);
+
+      const modalEl = document.getElementById("studentDetailsModal");
+      const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
+    }
+
+    function initEvents() {
+      document.getElementById("preferredCourseFilter").addEventListener("change", (e) => {
+        state.preferredCourse = e.target.value;
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("courseFilter").addEventListener("change", (e) => {
+        state.course = e.target.value;
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("degreeFilter").addEventListener("change", (e) => {
+        state.degree = normalizeLower(e.target.value);
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("universityFilter").addEventListener("change", (e) => {
+        state.university = e.target.value;
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("lgaFilter").addEventListener("change", (e) => {
+        state.lga = e.target.value;
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("genderFilter").addEventListener("change", (e) => {
+        state.gender = normalizeLower(e.target.value);
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("performanceFilter").addEventListener("change", (e) => {
+        state.perf = normalizeLower(e.target.value);
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        state.q = e.target.value;
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("sortBy").addEventListener("change", (e) => {
+        state.sortBy = e.target.value;
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("pageSize").addEventListener("change", (e) => {
+        state.pageSize = Number(e.target.value) || 25;
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("clearFilters").addEventListener("click", () => {
+        state.preferredCourse = "";
+        state.course = "";
+        state.degree = "";
+        state.university = "";
+        state.lga = "";
+        state.gender = "";
+        state.perf = "";
+        state.q = "";
+        state.sortBy = "nameAsc";
+        state.pageSize = 25;
+        state.page = 1;
+
+        document.getElementById("preferredCourseFilter").value = "";
+        document.getElementById("courseFilter").value = "";
+        document.getElementById("degreeFilter").value = "";
+        document.getElementById("universityFilter").value = "";
+        document.getElementById("lgaFilter").value = "";
+        document.getElementById("genderFilter").value = "";
+        document.getElementById("performanceFilter").value = "";
+        document.getElementById("searchInput").value = "";
+        document.getElementById("sortBy").value = "nameAsc";
+        document.getElementById("pageSize").value = "25";
+
+        applyFiltersAndRender(true);
+      });
+
+      document.getElementById("prevPage").addEventListener("click", () => {
+        state.page = Math.max(1, state.page - 1);
+        applyFiltersAndRender(false);
+      });
+
+      document.getElementById("nextPage").addEventListener("click", () => {
+        state.page = state.page + 1;
+        applyFiltersAndRender(false);
+      });
+
+      const tbody = document.getElementById("studentTableBody");
+      tbody.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+
+        const id = Number(btn.getAttribute("data-id"));
+        const action = btn.getAttribute("data-action");
+
+        if (action === "view") openStudentModal(id);
+      });
+    }
+
+    function initAOS() {
+      if (window.AOS) {
+        AOS.init({ once: true, duration: 700, offset: 80 });
+      }
+    }
+
+    function initBackToTop() {
+      const btn = document.getElementById("backToTop");
+      if (!btn) return;
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) btn.classList.add("show");
+        else btn.classList.remove("show");
+      });
+
+      btn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    async function init() {
+      initAOS();
+      initBackToTop();
+
+      try {
+        await loadStudents();
+        renderAllFilters();
+        initEvents();
+
+        state.filtered = sortStudents(state.students);
+        applyFiltersAndRender(true);
+      } catch (err) {
+        console.error(err);
+        const tbody = document.getElementById("studentTableBody");
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" class="text-center py-4 text-danger">
+              Failed to load students.JSON. Confirm the file is at ../data/students.JSON and you are running via a server (GitHub Pages or local server), not file://
+            </td>
+          </tr>
+        `;
+        document.getElementById("pagingInfo").textContent = "Error loading data";
+        document.getElementById("resultCount").textContent = "(0)";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
+
+  <!-- Inline Dashboard Styles (kept inside the HTML so nothing is skipped) -->
+  <style>
+    .stat-card {
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      padding: 1.5rem;
+      height: 100%;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .stats-icon {
+      font-size: 2rem;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-number {
+      font-weight: 800;
+    }
+
+    .stats-label {
+      color: rgba(33, 37, 41, 0.75);
+      font-weight: 600;
+    }
+
+    .filter-section .form-label {
+      font-weight: 600;
+    }
+
+    .table-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: #fff;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      line-height: 1;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(13, 110, 253, 0.06);
+      color: #0d6efd;
+      white-space: nowrap;
+    }
+
+    .pill i {
+      font-size: 0.95rem;
+    }
+
+    .pill-excellent {
+      background: rgba(25, 135, 84, 0.10);
+      color: #198754;
+    }
+
+    .pill-good {
+      background: rgba(13, 110, 253, 0.10);
+      color: #0d6efd;
+    }
+
+    .pill-average {
+      background: rgba(255, 193, 7, 0.12);
+      color: #b58100;
+    }
+
+    .pill-poor {
+      background: rgba(220, 53, 69, 0.10);
+      color: #dc3545;
+    }
+
+    .pill-not-rated {
+      background: rgba(108, 117, 125, 0.12);
+      color: #6c757d;
+    }
+  </style>
+</body>
+</html>
