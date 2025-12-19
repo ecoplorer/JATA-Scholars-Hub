@@ -304,7 +304,7 @@
             <!-- Profile header -->
             <div class="col-12">
               <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 p-3 border rounded-3 bg-light">
-                <img id="modal-photo" src="images/placeholders/avatar.jpg" alt="Student photo" class="rounded-circle border" style="width: 70px; height: 70px; object-fit: cover;">
+                <img id="modal-photo" src="images/placeholders/avatar.png" alt="Student photo" class="rounded-circle border" style="width: 70px; height: 70px; object-fit: cover;">
                 <div class="flex-grow-1">
                   <div class="fw-bold fs-5" id="modal-full-name"></div>
                   <div class="text-muted small">
@@ -477,7 +477,7 @@
 
               <div class="alert alert-light border mb-0">
                 <div class="d-flex align-items-start gap-2">
-                 
+
                 </div>
               </div>
 
@@ -584,6 +584,25 @@
     let courseChart = null;
     let perfChart = null;
 
+    function getBaseRoot() {
+      const path = window.location.pathname || "/";
+      const dir = path.endsWith("/") ? path : path.replace(/[^/]+$/, "");
+      const host = (window.location.hostname || "").toLowerCase();
+      if (host.endsWith("github.io")) {
+        const parts = path.split("/").filter(Boolean);
+        const repo = parts.length > 0 ? parts[0] : "";
+        return repo ? `/${repo}/` : "/";
+      }
+      return dir.startsWith("/") ? dir : `/${dir}`;
+    }
+
+    const BASE_ROOT = getBaseRoot();
+
+    function joinBase(relPath) {
+      const rel = String(relPath || "").replace(/^\/+/, "");
+      return BASE_ROOT + rel;
+    }
+
     function isNilish(v) {
       const s = String(v ?? "").trim().toLowerCase();
       return s === "" || s === "nil" || s === "n/a" || s === "na" || s === "none" || s === "null" || s === "undefined";
@@ -631,12 +650,18 @@
     }
 
     function resolvePhotoPath(photoValue) {
+      const fallback = joinBase("images/placeholders/avatar.png");
       const raw = safeText(photoValue);
-      const fallback = "../images/placeholders/avatar.png";
       if (!raw) return fallback;
 
-      if (/\.(png|jpg|jpeg|webp)$/i.test(raw)) return "../" + raw.replace(/^(\.\.\/)+/, "").replace(/^\//, "");
-      return "../" + raw.replace(/^(\.\.\/)+/, "").replace(/^\//, "") + ".jpg";
+      const cleaned = raw.replace(/^(\.\.\/)+/, "").replace(/^\/+/, "");
+      const hasExt = /\.(png|jpg|jpeg|webp)$/i.test(cleaned);
+
+      if (cleaned.includes("/")) {
+        return joinBase(hasExt ? cleaned : cleaned + ".jpg");
+      }
+
+      return joinBase(`images/students/${hasExt ? cleaned : cleaned + ".jpg"}`);
     }
 
     function normalizeStudent(raw, idx) {
@@ -734,7 +759,7 @@
     }
 
     async function loadStudents() {
-      const dataUrl = "data/students.json";
+      const dataUrl = joinBase("data/students.json");
 
       const res = await fetch(dataUrl, { cache: "no-store" });
       if (!res.ok) {
@@ -743,7 +768,7 @@
 
       const raw = await res.json();
       if (!Array.isArray(raw)) {
-        throw new Error("students.JSON must be an array of student objects");
+        throw new Error("students.json must be an array of student objects");
       }
 
       STUDENTS = raw.map(normalizeStudent);
@@ -892,7 +917,7 @@
             <td>${serial}</td>
             <td>
               <img src="${photoSrc}" alt="Photo of ${safeText(s.fullName)}" class="table-avatar" loading="lazy"
-                onerror="this.onerror=null;this.src='../images/placeholders/avatar.png';">
+                onerror="this.onerror=null;this.src='${joinBase("images/placeholders/avatar.png")}';">
             </td>
             <td class="fw-bold">${safeText(s.fullName)}</td>
             <td>${safeText(s.gender)}</td>
@@ -1007,7 +1032,7 @@
       document.getElementById("modal-photo").src = resolvePhotoPath(s.photo);
       document.getElementById("modal-photo").onerror = function () {
         this.onerror = null;
-        this.src = "../images/placeholders/avatar.png";
+        this.src = joinBase("images/placeholders/avatar.png");
       };
 
       document.getElementById("modal-employee-id").textContent = safeText(s.employeeId);
@@ -1198,7 +1223,7 @@
         tbody.innerHTML = `
           <tr>
             <td colspan="10" class="text-center py-4 text-danger">
-              Failed to load students.JSON. Confirm the file is at ../data/students.JSON and you are running via a server (GitHub Pages or local server), not file://
+              Failed to load students.json. Confirm the file exists at data/students.json, that it is committed to GitHub, and that you are opening the site via a server (GitHub Pages or local server), not file://
             </td>
           </tr>
         `;
