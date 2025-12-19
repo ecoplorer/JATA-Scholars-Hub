@@ -1,0 +1,11 @@
+.DS_Store
+Thumbs.db
+
+# Node or build artifacts (if you add them later)
+node_modules/
+dist/
+build/
+
+# Env files (if you add APIs later)
+.env
+.env.*
